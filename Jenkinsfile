@@ -3,37 +3,41 @@ pipeline {
 
     stages {
 
-        stage('Clone Repository') {
+        stage('Checkout Code') {
             steps {
-                git 'https://github.com/Swapnil010101/Calculator_Jenkins_CI.git'
+                git branch: 'master', url: 'https://github.com/Swapnil010101/Calculator_Jenkins_CI.git'
             }
         }
 
-        stage('Compile') {
+        stage('Compile Java Code') {
             steps {
-                sh 'javac src/*.java'
+                bat 'javac src\\*.java'
             }
         }
 
         stage('Run Application') {
             steps {
-                sh 'java -cp src Main'
+                bat 'java -cp src Main'
             }
         }
 
-        stage('Run Tests') {
+        stage('Run Test Cases') {
             steps {
-                sh 'java -ea -cp src CalculatorTest'
+                bat 'java -ea -cp src CalculatorTest'
             }
         }
+
     }
 
     post {
+
         success {
             echo 'Build and Tests Successful!'
         }
+
         failure {
             echo 'Build Failed!'
         }
+
     }
 }
