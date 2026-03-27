@@ -1,43 +1,21 @@
 pipeline {
     agent any
 
-    stages {
-
-        stage('Checkout Code') {
-            steps {
-                git branch: 'master', url: 'https://github.com/Swapnil010101/Calculator_Jenkins_CI.git'
-            }
-        }
-
-        stage('Compile Java Code') {
-            steps {
-                bat 'javac src\\*.java'
-            }
-        }
-
-        stage('Run Application') {
-            steps {
-                bat 'java -cp src Main'
-            }
-        }
-
-        stage('Run Test Cases') {
-            steps {
-                bat 'java -ea -cp src CalculatorTest'
-            }
-        }
-
+    tools {
+        maven 'Maven'
     }
 
-    post {
-
-        success {
-            echo 'Build and Tests Successful!'
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/Swapnil010101/Calculator11.git'
+            }
         }
 
-        failure {
-            echo 'Build Failed!'
+        stage('Build') {
+            steps {
+                sh 'mvn clean install'
+            }
         }
-
     }
 }
